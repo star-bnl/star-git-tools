@@ -15,8 +15,10 @@ date
 
 # Set default values
 : ${SCRIPT_DIR:="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
+: ${BFG:="java -jar /home/smirnovd/usr/local/bin/bfg-1.13.0.jar"}
 : ${CVS_HOST:=""}
 : ${CVS_DIR:="${CVS_HOST}/afs/rhic.bnl.gov/star/packages/repository"}
+: ${CVS_EXCLUDED_PATHS:="${SCRIPT_DIR}/cvs2git_paths.txt"}
 : ${PREFIX:="/scratch/smirnovd/star-bnl-readonly"}
 : ${LOCAL_CVSROOT_DIR:="${PREFIX}/star-cvs-local"}
 : ${LOCAL_GIT_DIR:="${PREFIX}/star-bnl/star-cvs"}
@@ -36,7 +38,7 @@ echo $ $cmd
 $cmd
 
 mkdir -p "${LOCAL_CVSROOT_DIR}/cvs"
-cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete --delete-excluded --exclude-from=${SCRIPT_DIR}/cvs2git_paths.txt -R ${CVS_DIR}/./ ${LOCAL_CVSROOT_DIR}/cvs"
+cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete --delete-excluded --exclude-from=${CVS_EXCLUDED_PATHS} -R ${CVS_DIR}/./ ${LOCAL_CVSROOT_DIR}/cvs"
 echo
 echo ---\> Updating local CVS modules in ${LOCAL_CVSROOT_DIR}/cvs
 echo $ $cmd
@@ -72,7 +74,7 @@ rm -fr ${LOCAL_GIT_DIR} && mkdir -p ${LOCAL_GIT_DIR} && cd ${LOCAL_GIT_DIR}
 git init
 cat ${PREFIX}/git-blob.dat ${PREFIX}/git-dump.dat | git fast-import
 git checkout
-java -jar ${PREFIX}/bfg-1.13.0.jar --delete-folders .git --delete-files .git --no-blob-protection ./
+${BFG} --delete-folders .git --delete-files .git --no-blob-protection ./
 git remote add origin git@github.com:star-bnl/star-cvs.git
 git push --mirror
 echo -- Done
