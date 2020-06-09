@@ -52,6 +52,9 @@ if ! check_git_version "$git_version" "$min_version"; then
   exit 1
 fi
 
+# Take care of unstable UI
+[[ $git_version == *"2.26.2"* ]] && SPARSE_CLONE_ARG="--no-checkout" || SPARSE_CLONE_ARG="--sparse"
+
 if [ $# -lt 1 ]
 then
   echo "Error: At least one path must be specified"
@@ -60,7 +63,7 @@ then
 fi
 
 [ ! -d "star-cvs/.git" -a ! -d ".git" ] \
-  && git clone --filter=blob:none --no-checkout https://github.com/star-bnl/star-cvs.git \
+  && git clone --filter=blob:none $SPARSE_CLONE_ARG https://github.com/star-bnl/star-cvs.git \
   && cd star-cvs \
   && git config core.sparseCheckout true \
   && git config core.sparseCheckoutCone true
