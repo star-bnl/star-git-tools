@@ -45,3 +45,10 @@ Requires Git version >= 2.26.2
 ```bash
 $ git star-checkout StRoot/StPicoEvent StRoot/StMuDSTMaker
 ```
+
+## Acknowledgments
+
+The following projects provided a good deal of inspiration:
+
+- https://github.com/cms-sw/cms-git-tools
+- https://github.com/tj/git-extras
