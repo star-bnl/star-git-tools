@@ -19,7 +19,7 @@ $ [sudo] make install
 
 By default, star-git-tools is installed under `/usr/local`. To install it at
 an alternate location, specify a `PREFIX` when calling `make`. Then make sure
-`PREFIX` is in the `PATH`.
+`PREFIX/bin` is in the `PATH`.
 
 ```bash
 # Non-root users can install under their home directory
@@ -28,8 +28,8 @@ make install PREFIX=$HOME/some/path
 # For third-party software kept under /opt/star
 make install PREFIX=/opt/star
 
-# Add `PREFIX` to the `PATH`. E.g. bash users can add to their ~/.bashrc file
-export PATH+=":$HOME/some/path"
+# Add `PREFIX/bin` to the `PATH`. E.g. bash users can add to their ~/.bashrc file
+export PATH+=":$HOME/some/path/bin"
 ```
 
 
@@ -39,7 +39,8 @@ A basic usage and examples
 
 ### git-star-checkout
 
-Do a partial clone followed by a sparse checkout of specified directories
+Do a partial clone followed by a sparse checkout of specified directories.
+Requires Git version >= 2.26.2
 
 ```bash
 $ git star-checkout StRoot/StPicoEvent StRoot/StMuDSTMaker
