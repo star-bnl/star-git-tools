@@ -9,6 +9,11 @@
 # In order to push to the remote server the account running the script must be
 # properly set up to authenticate with an SSH key.
 #
+# For test purposes one can skip the push-to-remote step by providing the DEBUG
+# variable set to any value:
+#
+# DEBUG= /path/to/cvs2git.sh
+#
 
 echo -- Start crontab job at
 date
@@ -73,10 +78,9 @@ echo -- Step 3. Recreating Git repository in ${LOCAL_GIT_DIR}
 rm -fr ${LOCAL_GIT_DIR} && mkdir -p ${LOCAL_GIT_DIR} && cd ${LOCAL_GIT_DIR}
 git init
 cat ${PREFIX}/git-blob.dat ${PREFIX}/git-dump.dat | git fast-import
-git checkout
 ${BFG} --delete-folders .git --delete-files .git --no-blob-protection ./
-git remote add origin git@github.com:star-bnl/star-cvs.git
-git push --mirror
+[[ -z ${DEBUG+x} ]] && git remote add origin git@github.com:star-bnl/star-cvs.git \
+                    && git push --mirror && git checkout
 echo -- Done
 
 echo
