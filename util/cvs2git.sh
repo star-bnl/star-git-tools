@@ -40,14 +40,14 @@ cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete -R ${C
 echo
 echo ---\> Updating local CVSROOT in ${LOCAL_CVS_DIR}
 echo $ $cmd
-$cmd
+time $cmd
 
 mkdir -p "${LOCAL_CVS_DIR}/cvs"
 cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete --delete-excluded --exclude-from=${CVS_EXCLUDED_PATHS} -R ${CVS_DIR}/./ ${LOCAL_CVS_DIR}/cvs"
 echo
 echo ---\> Updating local CVS modules in ${LOCAL_CVS_DIR}/cvs
 echo $ $cmd
-$cmd
+time $cmd
 
 echo -- Done
 
@@ -62,7 +62,7 @@ echo -- Done
 #
 echo
 echo -- Step 2. Creating Git blob files from the local CVS repository
-cvs2git --fallback-encoding=ascii --use-rcs --co=/usr/local/bin/co --force-keyword-mode=kept \
+time cvs2git --fallback-encoding=ascii --use-rcs --co=/usr/local/bin/co --force-keyword-mode=kept \
         --blobfile=${PREFIX}/git-blob.dat \
         --dumpfile=${PREFIX}/git-dump.dat \
         --username=cvs2git ${LOCAL_CVS_DIR}/cvs &> ${PREFIX}/cvs2git_cron_step2.log
@@ -77,8 +77,9 @@ echo
 echo -- Step 3. Recreating Git repository in ${LOCAL_GIT_DIR}
 rm -fr ${LOCAL_GIT_DIR} && mkdir -p ${LOCAL_GIT_DIR} && cd ${LOCAL_GIT_DIR}
 git init
-cat ${PREFIX}/git-blob.dat ${PREFIX}/git-dump.dat | git fast-import
-${BFG} --delete-folders .git --delete-files .git --no-blob-protection ./
+time cat ${PREFIX}/git-blob.dat ${PREFIX}/git-dump.dat | git fast-import
+time ${BFG} --delete-folders .git --delete-files .git --no-blob-protection ./
+git reflog expire --expire=now --all && time git gc --prune=now --aggressive
 [[ -z ${DEBUG+x} ]] && git remote add origin git@github.com:star-bnl/star-cvs.git \
                     && git push --mirror && git checkout
 echo -- Done
