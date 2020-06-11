@@ -20,7 +20,7 @@ date
 : ${CVS_DIR:="${CVS_HOST}/afs/rhic.bnl.gov/star/packages/repository"}
 : ${CVS_EXCLUDED_PATHS:="${SCRIPT_DIR}/cvs2git_paths.txt"}
 : ${PREFIX:="/scratch/smirnovd/star-bnl-readonly"}
-: ${LOCAL_CVSROOT_DIR:="${PREFIX}/star-cvs-local"}
+: ${LOCAL_CVS_DIR:="${PREFIX}/star-cvs-local"}
 : ${LOCAL_GIT_DIR:="${PREFIX}/star-bnl/star-cvs"}
 
 
@@ -28,27 +28,27 @@ date
 # Create or update a local copy of CVS repository
 #
 echo
-echo -- Step 1. Updating local copy of CVS repository in ${LOCAL_CVSROOT_DIR}
+echo -- Step 1. Updating local copy of CVS repository in ${LOCAL_CVS_DIR}
 
-mkdir -p "${LOCAL_CVSROOT_DIR}"
-cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete -R ${CVS_DIR}/./CVSROOT ${LOCAL_CVSROOT_DIR}/"
+mkdir -p "${LOCAL_CVS_DIR}"
+cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete -R ${CVS_DIR}/./CVSROOT ${LOCAL_CVS_DIR}/"
 echo
-echo ---\> Updating local CVSROOT in ${LOCAL_CVSROOT_DIR}
+echo ---\> Updating local CVSROOT in ${LOCAL_CVS_DIR}
 echo $ $cmd
 $cmd
 
-mkdir -p "${LOCAL_CVSROOT_DIR}/cvs"
-cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete --delete-excluded --exclude-from=${CVS_EXCLUDED_PATHS} -R ${CVS_DIR}/./ ${LOCAL_CVSROOT_DIR}/cvs"
+mkdir -p "${LOCAL_CVS_DIR}/cvs"
+cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete --delete-excluded --exclude-from=${CVS_EXCLUDED_PATHS} -R ${CVS_DIR}/./ ${LOCAL_CVS_DIR}/cvs"
 echo
-echo ---\> Updating local CVS modules in ${LOCAL_CVSROOT_DIR}/cvs
+echo ---\> Updating local CVS modules in ${LOCAL_CVS_DIR}/cvs
 echo $ $cmd
 $cmd
 
 echo -- Done
 
 echo
-echo -- Step 1a. Clean up local copy of CVS repository in ${LOCAL_CVSROOT_DIR}/cvs
-rm -fr ${LOCAL_CVSROOT_DIR}/cvs/StarDb/Geometry/tpc/tpcPadPlanes.dev2019.C,v
+echo -- Step 1a. Clean up local copy of CVS repository in ${LOCAL_CVS_DIR}/cvs
+rm -fr ${LOCAL_CVS_DIR}/cvs/StarDb/Geometry/tpc/tpcPadPlanes.dev2019.C,v
 echo -- Done
 
 
@@ -60,7 +60,7 @@ echo -- Step 2. Creating Git blob files from the local CVS repository
 cvs2git --fallback-encoding=ascii --use-rcs --co=/usr/local/bin/co --force-keyword-mode=kept \
         --blobfile=${PREFIX}/git-blob.dat \
         --dumpfile=${PREFIX}/git-dump.dat \
-        --username=cvs2git ${LOCAL_CVSROOT_DIR}/cvs &> ${PREFIX}/cvs2git_cron_step2.log
+        --username=cvs2git ${LOCAL_CVS_DIR}/cvs &> ${PREFIX}/cvs2git_cron_step2.log
 echo -- Done
 
 
