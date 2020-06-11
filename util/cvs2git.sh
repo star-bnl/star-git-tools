@@ -4,10 +4,10 @@
 # remote Git repository github.com:star-bnl/star-cvs.git. For example, the
 # following command can be added to the crontab:
 # 
-# 0 2,8,20 * * * CVS_HOST="rcas6010:" /path/to/cvs2git_cron.sh &> /path/to/cvs2git_cron.log
+# 0 2,8,20 * * * CVS_HOST="rcas6010:" /path/to/cvs2git.sh &> /path/to/cvs2git_cron.log
 #
-# In order to push to the remote server the star-bnl-bot account should be set
-# up to authenticate with an SSH key.
+# In order to push to the remote server the account running the script must be
+# properly set up to authenticate with an SSH key.
 #
 
 echo -- Start crontab job at
