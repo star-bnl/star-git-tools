@@ -10,7 +10,7 @@ codebase to Git.
 Install star-git-tools from network with a single command:
 
 ```bash
-curl -sSL https://git.io/star-git-tools | PREFIX=$HOME/some/path bash /dev/stdin
+curl -sSL https://bit.ly/star-git-tools | PREFIX=$HOME/some/path bash /dev/stdin
 ```
 
 or install from source by cloning [its GitHub

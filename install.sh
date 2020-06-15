@@ -14,7 +14,7 @@ make_install() {
     fi
 }
 
-dir=$(mktemp -t -d star-git-tools-install.XXXXXXXXXX) \
+dir=$(mktemp -d -t star-git-tools-install.XXXXXXXXXX) \
     && cd "$dir" \
     && echo "Setting up 'star-git-install'..." \
     && git clone https://github.com/star-bnl/star-git-tools.git &> /dev/null \
