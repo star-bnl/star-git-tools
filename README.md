@@ -7,9 +7,15 @@ codebase to Git.
 
 ## Installing star-git-tools
 
-Obtain the star-git-tools source by cloning [its GitHub
-repo](https://github.com/star-bnl/star-git-tools.git). Then install it by doing
-`make install` from the source tree.
+Install star-git-tools from network with a single command:
+
+```bash
+curl -sSL https://git.io/star-git-tools | PREFIX=$HOME/some/path bash /dev/stdin
+```
+
+or install from source by cloning [its GitHub
+repo](https://github.com/star-bnl/star-git-tools.git) and then running `make
+install` in the cloned directory.
 
 ```bash
 $ git clone https://github.com/star-bnl/star-git-tools.git
