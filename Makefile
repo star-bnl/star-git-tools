@@ -6,8 +6,7 @@ COMMANDS = $(subst bin/, , $(BINS))
 
 default: install
 
-install:
-	@mkdir -p $(DESTDIR)$(BINPREFIX)
+install: mkdir_prefix
 	@echo "... installing bins to $(DESTDIR)$(BINPREFIX)"
 	$(eval TEMPFILE := $(shell mktemp -q $${TMPDIR:-/tmp}/star-git-tools.XXXXXX 2>/dev/null || mktemp -q))
 	@# chmod from rw-------(default) to rwxrwxr-x, so that users can exec the scripts
@@ -26,10 +25,13 @@ install:
 			cp -f $(TEMPFILE) $(DESTDIR)$(BINPREFIX)/$(COMMAND); \
 		fi; \
 	)
-	$(eval BINPATH := $(shell cd $(DESTDIR)$(BINPREFIX); pwd))
+	$(eval BINPATH := $(shell cd $(DESTDIR)$(BINPREFIX) && pwd))
 	@echo
 	@echo "Make sure $(BINPATH) is in your PATH. E.g. add to your .bashrc"
 	@echo "export PATH+=\":$(BINPATH)\""
+
+mkdir_prefix:
+	@mkdir -p $(DESTDIR)$(BINPREFIX)
 
 uninstall:
 	@$(foreach BIN, $(BINS), \
@@ -37,4 +39,4 @@ uninstall:
 		rm -f $(DESTDIR)$(BINPREFIX)/$(notdir $(BIN)); \
 	)
 
-.PHONY: default install uninstall
+.PHONY: default install uninstall mkdir_prefix
