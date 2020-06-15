@@ -4,7 +4,7 @@
 # remote Git repository github.com:star-bnl/star-cvs.git. For example, the
 # following command can be added to the crontab:
 # 
-# 0 2,8,20 * * * CVS_HOST="rcas6010:" /path/to/cvs2git.sh &> /path/to/cvs2git_cron.log
+# 0 2,8,20 * * * CVS_HOST="rcas6010" /path/to/cvs2git.sh &> /path/to/cvs2git_cron.log
 #
 # In order to push to the remote server the account running the script must be
 # properly set up to authenticate with an SSH key.
@@ -15,14 +15,13 @@
 # DEBUG= /path/to/cvs2git.sh
 #
 
-echo -- Start crontab job at
+echo -- Start job at
 date
 
 # Set default values
 : ${SCRIPT_DIR:="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
 : ${BFG:="java -jar /home/smirnovd/usr/local/bin/bfg-1.13.0.jar"}
-: ${CVS_HOST:=""}
-: ${CVS_DIR:="${CVS_HOST}/afs/rhic.bnl.gov/star/packages/repository"}
+: ${CVS_DIR:="${CVS_HOST:+$CVS_HOST:}/afs/rhic/star/packages/repository"}
 : ${CVS_EXCLUDED_PATHS:="${SCRIPT_DIR}/cvs2git_paths.txt"}
 : ${PREFIX:="/scratch/smirnovd/star-bnl-readonly"}
 : ${LOCAL_CVS_DIR:="${PREFIX}/star-cvs-local"}
@@ -33,7 +32,7 @@ date
 # Create or update a local copy of CVS repository
 #
 echo
-echo -- Step 1. Updating local copy of CVS repository in ${LOCAL_CVS_DIR}
+echo -- Step 1: Creating/updating local copy of CVS repository in ${LOCAL_CVS_DIR}
 
 mkdir -p "${LOCAL_CVS_DIR}"
 cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete -R ${CVS_DIR}/./CVSROOT ${LOCAL_CVS_DIR}/"
@@ -49,7 +48,7 @@ echo ---\> Updating local CVS modules in ${LOCAL_CVS_DIR}/cvs
 echo $ $cmd
 time $cmd
 
-echo -- Done
+echo -- Step 1: Done
 
 echo
 echo -- Step 1a. Clean up local copy of CVS repository in ${LOCAL_CVS_DIR}/cvs
@@ -61,12 +60,12 @@ echo -- Done
 # Run cvs2git
 #
 echo
-echo -- Step 2. Creating Git blob files from the local CVS repository
+echo -- Step 2: Creating Git blob files from the local CVS repository
 time cvs2git --fallback-encoding=ascii --use-rcs --co=/usr/local/bin/co --force-keyword-mode=kept \
         --blobfile=${PREFIX}/git-blob.dat \
         --dumpfile=${PREFIX}/git-dump.dat \
         --username=cvs2git ${LOCAL_CVS_DIR}/cvs &> ${PREFIX}/cvs2git_cron_step2.log
-echo -- Done
+echo -- Step 2: Done
 
 
 #
@@ -74,18 +73,18 @@ echo -- Done
 # cvs2git then check out the master branch and push everything to github
 #
 echo
-echo -- Step 3. Recreating Git repository in ${LOCAL_GIT_DIR}
+echo -- Step 3: Recreating Git repository in ${LOCAL_GIT_DIR}
 rm -fr ${LOCAL_GIT_DIR} && mkdir -p ${LOCAL_GIT_DIR} && cd ${LOCAL_GIT_DIR}
 git init
 time cat ${PREFIX}/git-blob.dat ${PREFIX}/git-dump.dat | git fast-import
 time ${BFG} --delete-folders .git --delete-files .git --no-blob-protection ./
 git reflog expire --expire=now --all && time git gc --prune=now --aggressive
-[[ -z ${DEBUG+x} ]] && git remote add origin git@github.com:star-bnl/star-cvs.git \
-                    && git push --mirror && git checkout
-echo -- Done
+[[ -z "${DEBUG+x}" ]] && git remote add origin git@github.com:star-bnl/star-cvs.git \
+                      && git push --mirror && git checkout
+echo -- Step 3: Done
 
 echo
-echo -- Done with crontab job at
+echo -- Done with job at
 date
 
 exit 0

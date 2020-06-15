@@ -27,7 +27,7 @@ install: mkdir_prefix
 	)
 	$(eval BINPATH := $(shell cd $(DESTDIR)$(BINPREFIX) && pwd))
 	@echo
-	@echo "Make sure $(BINPATH) is in your PATH. E.g. add to your .bashrc"
+	@echo "Make sure $(BINPATH) is in your PATH. E.g. add to your ~/.bashrc"
 	@echo "export PATH+=\":$(BINPATH)\""
 
 mkdir_prefix:
