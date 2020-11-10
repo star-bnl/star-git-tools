@@ -156,8 +156,8 @@ ctx.revision_collector = GitRevisionCollector(
     # global_options=['-q', '-N', '-f'].
     #
     # Uncomment one of the two following lines:
-    #RCSRevisionReader(co_executable=r'co'),
-    CVSRevisionReader(cvs_executable=r'cvs'),
+    RCSRevisionReader(co_executable=r'/usr/local/bin/co'),
+    #CVSRevisionReader(cvs_executable=r'cvs'),
 
     # The file in which to write the git-fast-import stream that
     # contains the file revision contents.  If None, it will be
@@ -197,7 +197,7 @@ ctx.cvs_author_decoder = CVSTextDecoder(
         #'latin1',
         'ascii',
         ],
-    #fallback_encoding='ascii'
+    fallback_encoding='ascii'
     )
 ctx.cvs_log_decoder = CVSTextDecoder(
     [
@@ -205,7 +205,7 @@ ctx.cvs_log_decoder = CVSTextDecoder(
         #'latin1',
         'ascii',
         ],
-    #fallback_encoding='ascii',
+    fallback_encoding='ascii',
     eol_fix='\n',
     )
 # You might want to be especially strict when converting filenames to
@@ -216,7 +216,7 @@ ctx.cvs_filename_decoder = CVSTextDecoder(
         #'latin1',
         'ascii',
         ],
-    #fallback_encoding='ascii'
+    fallback_encoding='ascii'
     )
 
 # Template for the commit message to be used for initial project
@@ -460,7 +460,7 @@ ctx.file_property_setters.extend([
     ConditionalPropertySetter(
         cvs_file_is_binary, KeywordHandlingPropertySetter('untouched'),
         ),
-    KeywordHandlingPropertySetter('collapsed'),
+    KeywordHandlingPropertySetter('kept'),
 
     ])
 ctx.revision_property_setters.extend([
@@ -527,7 +527,7 @@ author_transforms={
 
     # This one will be used for commits for which CVS doesn't record
     # the original author, as explained above.
-    'cvs2git' : 'cvs2git <admin@example.com>',
+    'cvs2git' : 'cvs2git <cvs2git>',
     }
 
 # This is the main option that causes cvs2git to output to a
