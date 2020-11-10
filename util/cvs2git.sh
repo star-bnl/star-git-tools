@@ -37,18 +37,18 @@ echo
 echo -- Step 1: Creating/updating local copy of CVS repository in ${CVS_REPO_DIR}
 
 mkdir -p "${CVS_ROOT_DIR}"
-cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete -R ${CVS_DIR}/./CVSROOT ${CVS_ROOT_DIR}/"
+cmd=(rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete -R ${CVS_DIR}/./CVSROOT ${CVS_ROOT_DIR}/)
 echo
 echo ---\> Updating local CVSROOT in ${CVS_ROOT_DIR}
-echo $ $cmd
-time $cmd
+echo "${cmd[@]}"
+time "${cmd[@]}"
 
 mkdir -p "${CVS_REPO_DIR}"
-cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete --delete-excluded --exclude-from=${CVS_EXCLUDED_PATHS} -R ${CVS_DIR}/./ ${CVS_REPO_DIR}"
+cmd=(rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete --delete-excluded --filter "merge ${CVS_EXCLUDED_PATHS}" -R ${CVS_DIR}/./ ${CVS_REPO_DIR})
 echo
 echo ---\> Updating local CVS modules in ${CVS_REPO_DIR}
-echo $ $cmd
-time $cmd
+echo "${cmd[@]}"
+time "${cmd[@]}"
 
 echo -- Step 1: Done
 
@@ -58,10 +58,12 @@ echo -- Step 1: Done
 #
 echo
 echo -- Step 2: Creating Git blob files from the local CVS repository
-time cvs2git --fallback-encoding=ascii --use-rcs --co=/usr/local/bin/co --force-keyword-mode=kept \
+cmd=(cvs2git --fallback-encoding=ascii --use-rcs --co=/usr/local/bin/co --force-keyword-mode=kept \
         --blobfile=${PREFIX}/git-blob.dat \
         --dumpfile=${PREFIX}/git-dump.dat \
-        --username=cvs2git ${CVS_REPO_DIR} &> ${PREFIX}/cvs2git_cron_step2.log
+        --username=cvs2git ${CVS_REPO_DIR})
+echo "${cmd[@]}  &> ${CVS_REPO_DIR}_cvs2git_step2.log"
+time "${cmd[@]}" &> ${CVS_REPO_DIR}_cvs2git_step2.log
 echo -- Step 2: Done
 
 
