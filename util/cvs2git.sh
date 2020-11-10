@@ -20,11 +20,13 @@ date
 
 # Set default values
 : ${SCRIPT_DIR:="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
+: ${GIT_REPO:="star-cvs"}
+: ${PREFIX:="/scratch/smirnovd/cvs2git_readonly"}
+: ${CVS_ROOT_DIR:="${PREFIX}/cvs"}
+: ${CVS_REPO_DIR:="${PREFIX}/cvs/${GIT_REPO}"}
+: ${GIT_REPO_DIR:="${PREFIX}/${GIT_REPO}"}
 : ${CVS_DIR:="${CVS_HOST:+$CVS_HOST:}/afs/rhic/star/packages/repository"}
 : ${CVS_EXCLUDED_PATHS:="${SCRIPT_DIR}/cvs2git_paths.txt"}
-: ${PREFIX:="/scratch/smirnovd/star-bnl-readonly"}
-: ${LOCAL_CVS_DIR:="${PREFIX}/star-cvs-local"}
-: ${LOCAL_GIT_DIR:="${PREFIX}/star-bnl/star-cvs"}
 : ${CVS2GIT_CLEANUP="${SCRIPT_DIR}/cvs2git_cleanup.sh"}
 
 
@@ -32,19 +34,19 @@ date
 # Create or update a local copy of CVS repository
 #
 echo
-echo -- Step 1: Creating/updating local copy of CVS repository in ${LOCAL_CVS_DIR}
+echo -- Step 1: Creating/updating local copy of CVS repository in ${CVS_REPO_DIR}
 
-mkdir -p "${LOCAL_CVS_DIR}"
-cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete -R ${CVS_DIR}/./CVSROOT ${LOCAL_CVS_DIR}/"
+mkdir -p "${CVS_ROOT_DIR}"
+cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete -R ${CVS_DIR}/./CVSROOT ${CVS_ROOT_DIR}/"
 echo
-echo ---\> Updating local CVSROOT in ${LOCAL_CVS_DIR}
+echo ---\> Updating local CVSROOT in ${CVS_ROOT_DIR}
 echo $ $cmd
 time $cmd
 
-mkdir -p "${LOCAL_CVS_DIR}/cvs"
-cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete --delete-excluded --exclude-from=${CVS_EXCLUDED_PATHS} -R ${CVS_DIR}/./ ${LOCAL_CVS_DIR}/cvs"
+mkdir -p "${CVS_REPO_DIR}"
+cmd="rsync -a --omit-dir-times --chmod=Dug=rwx,Do=rx,Fug+rw,Fo+r --delete --delete-excluded --exclude-from=${CVS_EXCLUDED_PATHS} -R ${CVS_DIR}/./ ${CVS_REPO_DIR}"
 echo
-echo ---\> Updating local CVS modules in ${LOCAL_CVS_DIR}/cvs
+echo ---\> Updating local CVS modules in ${CVS_REPO_DIR}
 echo $ $cmd
 time $cmd
 
@@ -64,7 +66,7 @@ echo -- Step 2: Creating Git blob files from the local CVS repository
 time cvs2git --fallback-encoding=ascii --use-rcs --co=/usr/local/bin/co --force-keyword-mode=kept \
         --blobfile=${PREFIX}/git-blob.dat \
         --dumpfile=${PREFIX}/git-dump.dat \
-        --username=cvs2git ${LOCAL_CVS_DIR}/cvs &> ${PREFIX}/cvs2git_cron_step2.log
+        --username=cvs2git ${CVS_REPO_DIR} &> ${PREFIX}/cvs2git_cron_step2.log
 echo -- Step 2: Done
 
 
@@ -73,12 +75,12 @@ echo -- Step 2: Done
 # cvs2git then check out the master branch and push everything to github
 #
 echo
-echo -- Step 3: Recreating Git repository in ${LOCAL_GIT_DIR}
-rm -fr ${LOCAL_GIT_DIR} && mkdir -p ${LOCAL_GIT_DIR} && cd ${LOCAL_GIT_DIR}
+echo -- Step 3: Recreating Git repository in ${GIT_REPO_DIR}
+rm -fr ${GIT_REPO_DIR} && mkdir -p ${GIT_REPO_DIR} && cd ${GIT_REPO_DIR}
 git init
 time cat ${PREFIX}/git-blob.dat ${PREFIX}/git-dump.dat | git fast-import
 [[ -n "${CVS2GIT_CLEANUP}" ]] && GIT_REPO_DIR="${GIT_REPO_DIR}" ${CVS2GIT_CLEANUP}
-[[ -z "${DEBUG+x}" ]] && git remote add origin git@github.com:star-bnl/star-cvs.git \
+[[ -z "${DEBUG+x}" ]] && git remote add origin git@github.com:star-bnl/${GIT_REPO}.git \
                       && git push --mirror && git checkout
 echo -- Step 3: Done
 
