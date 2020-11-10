@@ -52,11 +52,6 @@ time $cmd
 
 echo -- Step 1: Done
 
-echo
-echo -- Step 1a. Clean up local copy of CVS repository in ${LOCAL_CVS_DIR}/cvs
-rm -fr ${LOCAL_CVS_DIR}/cvs/StarDb/Geometry/tpc/tpcPadPlanes.dev2019.C,v
-echo -- Done
-
 
 #
 # Run cvs2git
