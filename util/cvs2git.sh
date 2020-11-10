@@ -26,7 +26,7 @@ date
 : ${CVS_REPO_DIR:="${PREFIX}/cvs/${GIT_REPO}"}
 : ${GIT_REPO_DIR:="${PREFIX}/${GIT_REPO}"}
 : ${CVS_DIR:="${CVS_HOST:+$CVS_HOST:}/afs/rhic/star/packages/repository"}
-: ${CVS_EXCLUDED_PATHS:="${SCRIPT_DIR}/cvs2git_paths.txt"}
+: ${CVS_EXCLUDED_PATHS:="${SCRIPT_DIR}/cvs2git_paths_${GIT_REPO}.txt"}
 : ${CVS2GIT_CLEANUP="${SCRIPT_DIR}/cvs2git_cleanup.sh"}
 
 
