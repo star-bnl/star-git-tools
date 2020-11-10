@@ -20,12 +20,12 @@ date
 
 # Set default values
 : ${SCRIPT_DIR:="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
-: ${BFG:="java -jar /home/smirnovd/usr/local/bin/bfg-1.13.0.jar"}
 : ${CVS_DIR:="${CVS_HOST:+$CVS_HOST:}/afs/rhic/star/packages/repository"}
 : ${CVS_EXCLUDED_PATHS:="${SCRIPT_DIR}/cvs2git_paths.txt"}
 : ${PREFIX:="/scratch/smirnovd/star-bnl-readonly"}
 : ${LOCAL_CVS_DIR:="${PREFIX}/star-cvs-local"}
 : ${LOCAL_GIT_DIR:="${PREFIX}/star-bnl/star-cvs"}
+: ${CVS2GIT_CLEANUP="${SCRIPT_DIR}/cvs2git_cleanup.sh"}
 
 
 #
@@ -77,8 +77,7 @@ echo -- Step 3: Recreating Git repository in ${LOCAL_GIT_DIR}
 rm -fr ${LOCAL_GIT_DIR} && mkdir -p ${LOCAL_GIT_DIR} && cd ${LOCAL_GIT_DIR}
 git init
 time cat ${PREFIX}/git-blob.dat ${PREFIX}/git-dump.dat | git fast-import
-time ${BFG} --delete-folders .git --delete-files .git --no-blob-protection ./
-git reflog expire --expire=now --all && time git gc --prune=now --aggressive
+[[ -n "${CVS2GIT_CLEANUP}" ]] && GIT_REPO_DIR="${GIT_REPO_DIR}" ${CVS2GIT_CLEANUP}
 [[ -z "${DEBUG+x}" ]] && git remote add origin git@github.com:star-bnl/star-cvs.git \
                       && git push --mirror && git checkout
 echo -- Step 3: Done
