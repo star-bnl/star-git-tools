@@ -123,7 +123,7 @@ logger.log_level = logger.NORMAL
 
 
 # The directory to use for temporary files:
-ctx.tmpdir = r'cvs2git-tmp'
+ctx.tmpdir = r'@CVS2GIT_TMP_DIR@'
 
 # During FilterSymbolsPass, cvs2git records the contents of file
 # revisions into a "blob" file in git-fast-import format.  The
@@ -568,7 +568,7 @@ run_options.set_project(
     # The filesystem path to the part of the CVS repository (*not* a
     # CVS working copy) that should be converted.  This may be a
     # subdirectory (i.e., a module) within a larger CVS repository.
-    r'test-data/main-cvsrepos',
+    r'@CVS_REPO_DIR@',
 
     # A list of symbol transformations that can be used to rename
     # symbols in this project.
