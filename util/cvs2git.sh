@@ -27,7 +27,9 @@ date
 : ${GIT_REPO_DIR:="${PREFIX}/${GIT_REPO}"}
 : ${CVS_DIR:="${CVS_HOST:+$CVS_HOST:}/afs/rhic/star/packages/repository"}
 : ${CVS_EXCLUDED_PATHS:="${SCRIPT_DIR}/cvs2git_paths_${GIT_REPO}.txt"}
+: ${CVS2GIT_OPTIONS:="${SCRIPT_DIR}/cvs2git_options.py"}
 : ${CVS2GIT_CLEANUP="${SCRIPT_DIR}/cvs2git_cleanup.sh"}
+: ${CVS2GIT_TMP_DIR:="${CVS_REPO_DIR}-tmp"}
 
 
 #
@@ -58,10 +60,9 @@ echo -- Step 1: Done
 #
 echo
 echo -- Step 2: Creating Git blob files from the local CVS repository
-cmd=(cvs2git --fallback-encoding=ascii --use-rcs --co=/usr/local/bin/co --force-keyword-mode=kept \
-        --blobfile=${PREFIX}/git-blob.dat \
-        --dumpfile=${PREFIX}/git-dump.dat \
-        --username=cvs2git ${CVS_REPO_DIR})
+CVS2GIT_OPTIONS_TMP=${CVS_REPO_DIR}_options.py
+cat ${CVS2GIT_OPTIONS} | sed -e "s|@CVS2GIT_TMP_DIR@|${CVS2GIT_TMP_DIR}|g; s|@CVS_REPO_DIR@|${CVS_REPO_DIR}|g;" > ${CVS2GIT_OPTIONS_TMP}
+cmd=(cvs2git --options=${CVS2GIT_OPTIONS_TMP})
 echo "${cmd[@]}  &> ${CVS_REPO_DIR}_cvs2git_step2.log"
 time "${cmd[@]}" &> ${CVS_REPO_DIR}_cvs2git_step2.log
 echo -- Step 2: Done
@@ -75,7 +76,7 @@ echo
 echo -- Step 3: Recreating Git repository in ${GIT_REPO_DIR}
 rm -fr ${GIT_REPO_DIR} && mkdir -p ${GIT_REPO_DIR} && cd ${GIT_REPO_DIR}
 git init
-time cat ${PREFIX}/git-blob.dat ${PREFIX}/git-dump.dat | git fast-import
+time cat ${CVS2GIT_TMP_DIR}/git-blob.dat ${CVS2GIT_TMP_DIR}/git-dump.dat | git fast-import
 [[ -n "${CVS2GIT_CLEANUP}" ]] && GIT_REPO_DIR="${GIT_REPO_DIR}" ${CVS2GIT_CLEANUP}
 [[ -z "${DEBUG+x}" ]] && git remote add origin git@github.com:star-bnl/${GIT_REPO}.git \
                       && git push --mirror && git checkout
