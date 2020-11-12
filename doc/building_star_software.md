@@ -71,3 +71,25 @@ Finally, ask `git` to checkout the selected subdirectories
 
 Assuming the default STAR environment on a RACF interactive node the code can be
 compiled as usual with the `cons` command.
+
+
+## How to build a release
+
+A decision was made not to migrate the MC event generators (MCEG) originally
+present in the STAR CVS repository into the primary Git repository
+[`star-sw`](https://github.com/star-bnl/star-sw). Instead the event
+generators were moved into a separate Git repository
+[`star-mcgen`](https://github.com/star-bnl/star-mcgen). This separation
+underlines the external nature of the MCEGs to the rest of the STAR codebase
+and allows to build these libraries independently only when necessary.
+Meanwhile, in order to build a release with all the libraries one can merge the
+code from the two repositories into a single local directory and proceed as
+usual. For example, to get the code corresponding to the `SL20a` tag do
+
+    mkdir release-SL20a && cd release-SL20a
+    curl -sL https://github.com/star-bnl/star-sw/archive/SL20a.tar.gz | tar -xz  --strip-components 1
+    curl -sL https://github.com/star-bnl/star-mcgen/archive/SL20a.tar.gz | tar -xz  --strip-components 1
+
+At this point the code can be compiled as usual, e.g. by running `cons`.
+Similarly, to get the most recent code for the "DEV" release replace `SL20a`
+with `master` in the above example.
