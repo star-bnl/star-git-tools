@@ -1,0 +1,5 @@
+90b68a7efacfa4ddc14a8a321dcdd16ba3beb9cb 1197190 StarDb/AgiGeometry/devE.h
+6f00e65f3531f6da3ebc129114ad88ec504a67c6 4716482 StarDb/AgiGeometry/devT.h
+7a52e163ee7d8118374696b8dd6f08e59ba0ba2d 13251154 StRoot/RTS/EventTracker/mapbin.h
+8b9178dc4150c417306e6c64adca56dedeb96098 33005582 StarVMC/geant3/data/xsneut95.dat
+2b80c01729ee11babfae242200ed7008b077a2dd 34506504 pams/sim/gphysdata/xsneut96.dat
