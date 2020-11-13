@@ -35,12 +35,12 @@ git rev-list --objects --all \
 
 cat ${GIT_REPO_DIR}/blobs_to_delete.txt | awk '{print $1}'> ${GIT_REPO_DIR}/blobs_to_delete_sha.txt
 
-${BFG} --delete-folders .git --no-blob-protection ${GIT_REPO_DIR}
-${BFG} --delete-files .git --no-blob-protection ${GIT_REPO_DIR}
-${BFG} --delete-files tpcPadGainT0B.*.root --no-blob-protection ${GIT_REPO_DIR}
-${BFG} --delete-files tpcDriftVelocity.*.C --no-blob-protection ${GIT_REPO_DIR}
-${BFG} --strip-blobs-with-ids ${SCRIPT_DIR}/blobs_to_delete_manual_sha.txt --no-blob-protection ${GIT_REPO_DIR}
-${BFG} --strip-blobs-with-ids ${GIT_REPO_DIR}/blobs_to_delete_sha.txt  --no-blob-protection ${GIT_REPO_DIR}
+${BFG} --delete-folders .git --no-blob-protection --private ${GIT_REPO_DIR}
+${BFG} --delete-files .git --no-blob-protection --private ${GIT_REPO_DIR}
+${BFG} --delete-files tpcPadGainT0B.*.root --no-blob-protection --private ${GIT_REPO_DIR}
+${BFG} --delete-files tpcDriftVelocity.*.C --no-blob-protection --private ${GIT_REPO_DIR}
+${BFG} --strip-blobs-with-ids ${SCRIPT_DIR}/blobs_to_delete_manual_sha.txt --no-blob-protection --private ${GIT_REPO_DIR}
+${BFG} --strip-blobs-with-ids ${GIT_REPO_DIR}/blobs_to_delete_sha.txt  --no-blob-protection --private ${GIT_REPO_DIR}
 
 # Final clean up
 git reflog expire --expire=now --all && git gc --prune=now --aggressive
