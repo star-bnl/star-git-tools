@@ -30,6 +30,7 @@ git rev-list --objects --all \
 | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
 | sed -n 's/^blob //p' \
 | grep -vF --file=${GIT_REPO_DIR}/blobs_to_keep.txt \
+| grep -vF --file=${SCRIPT_DIR}/paths_to_keep.txt \
 | awk '$2 >= 200000' \
 | sort --numeric-sort --key=2 > ${GIT_REPO_DIR}/blobs_to_delete.txt
 
