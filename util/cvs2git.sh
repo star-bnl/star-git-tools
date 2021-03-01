@@ -70,13 +70,14 @@ echo -- Step 2: Done
 
 #
 # (Re-)create the actual git repository from the blob and dump files created by
-# cvs2git then check out the master branch and push everything to github
+# cvs2git then check out the main branch and push everything to github
 #
 echo
 echo -- Step 3: Recreating Git repository in ${GIT_REPO_DIR}
 rm -fr ${GIT_REPO_DIR} && mkdir -p ${GIT_REPO_DIR} && cd ${GIT_REPO_DIR}
-git init
+git init -b main
 time cat ${CVS2GIT_TMP_DIR}/git-blob.dat ${CVS2GIT_TMP_DIR}/git-dump.dat | git fast-import
+git branch -m master main
 [[ -n "${CVS2GIT_CLEANUP}" ]] && GIT_REPO_DIR="${GIT_REPO_DIR}" ${CVS2GIT_CLEANUP}
 [[ -z "${DEBUG+x}" ]] && git remote add origin git@github.com:star-bnl/${GIT_REPO}.git \
                       && git push --mirror && git checkout
