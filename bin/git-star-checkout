@@ -62,9 +62,9 @@ then
   exit 1
 fi
 
-[ ! -d "star-cvs/.git" -a ! -d ".git" ] \
-  && git clone --filter=blob:none $SPARSE_CLONE_ARG https://github.com/star-bnl/star-cvs.git \
-  && cd star-cvs \
+[ ! -d "star-sw/.git" -a ! -d ".git" ] \
+  && git clone --filter=blob:none $SPARSE_CLONE_ARG https://github.com/star-bnl/star-sw.git \
+  && cd star-sw \
   && git config core.sparseCheckout true \
   && git config core.sparseCheckoutCone true
 
