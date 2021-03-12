@@ -1,5 +1,5 @@
 This is a basic set of instructions for STAR users who are not familiar with
-Git. In the following we assume that the `git` version is at least 2.17.0 just
+Git. In the following we assume that the `git` version is at least 2.26.2 just
 like the one installed on RACF for STAR users. We also use the `star-sw` name
 for the Git repository and the remote location at
 https://github.com/star-bnl/star-sw.git  which is likely to change.
