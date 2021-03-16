@@ -129,6 +129,34 @@ Assuming the default STAR environment on a RACF interactive node the code can be
 compiled as usual with the `cons` command.
 
 
+## Workflow with STAR Git repositories
+
+We adopt a very common workflow typical for many projects hosting a central
+repository on GitHub. It can be summarized in a few steps outlined below:
+
+1. **Fork the repo.** A "copy" of the central repository is created under your
+  GitHub account
+
+2. **Clone your fork.** A local "copy" of the repository is created on your
+   machine by using a Git command similar to this:
+
+   ```shell
+   $ git clone git@github.com:&lt;YOUR-USERNAME&gt;/star-sw.git
+   ```
+
+3. **Make changes locally.** The code is modified and commits with informative
+   log messages created
+
+4. **Push to your fork.** The changes are sent to your fork hosted on GitHub
+
+   ```shell
+   $ git push
+   ```
+
+5. **Create a pull request.** Let others know that you want to merge your
+  changes into the central repository
+
+
 ## How to build a release
 
 A decision was made not to migrate the MC event generators (MCEG) originally
