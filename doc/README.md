@@ -1,3 +1,18 @@
+In this document we collect information and instructions to help the
+collaborators of the STAR experiment at BNL with their use of the software.
+
+
+## Where is the source code?
+
+The primary repositories containing the STAR code and other support packages are
+hosted on GitHub:
+
+- https://github.com/star-bnl/star-sw  &mdash; Contains the code need to
+  reconstruct raw data collected by the experiment
+
+- https://github.com/star-bnl/star-mcgen &mdash; Contains Monte-Carlo generators
+  and the respective interfaces for simulating detector data
+
 
 ## How to access STAR repository hosted on GitHub
 
@@ -73,7 +88,7 @@ URL syntax specifying the port number.
 This is called a sparse checkout. In this case you start by cloning the bare
 repository
 
-    $ git clone --no-checkout https://github.com/star-bnl/star-sw.git
+    $ git clone --no-checkout https://github.com/<YOUR-USERNAME>/star-sw.git
     $ ls -a star-sw/
     .  ..  .git
 
