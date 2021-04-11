@@ -1,6 +1,18 @@
 In this document we collect information and instructions to help the
 collaborators of the STAR experiment at BNL with their use of the software.
 
+- [Where is the source code?](#where-is-the-source-code%3F)
+- [How to access STAR repository hosted on GitHub](#how-to-access-star-repository-hosted-on-github)
+  - [Using HTTPS](#using-https)
+  - [Using SSH](#using-ssh)
+  - [Creating SSH tunnel](#creating-ssh-tunnel)
+- [How to checkout only one or a few packages/subdirectories](#how-to-checkout-only-one-or-a-few-packages%2Fsubdirectories)
+- [Workflow with STAR Git repositories](#workflow-with-star-git-repositories)
+- [How to build a release](#how-to-build-a-release)
+- [Equivalent commands for Git and CVS](#equivalent-commands-for-git-and-cvs)
+
+<hr width=80%>
+
 
 ## Where is the source code?
 
