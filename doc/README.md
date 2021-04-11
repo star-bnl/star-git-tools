@@ -177,3 +177,18 @@ usual. For example, to get the code corresponding to the `SL20a` tag do
 At this point the code can be compiled as usual, e.g. by running `cons`.
 Similarly, to get the most recent code for the "DEV" release replace `SL20a`
 with `main` in the above example.
+
+
+## Equivalent commands for Git and CVS
+
+Here is a small table with equivalent commands for Git and CVS repositories.
+
+Description                                    | CVS               | GIT
+---                                            | ---               | ---
+Show status of repository                      | `cvs status`      | `git status                                `
+Add new files to repository                    | `cvs add <files>` | `git add <files>                           `
+Commit changes in existing files to repository | `cvs commit`      | `git add -u <files> && git commit && git push`
+Retrieve changes from repository               | `cvs update`      | `git pull                                  `
+Show log of changes to a file                  | `cvs log <file>`  | `git log <file>                            `
+Show changes in commit/revision                |                   | `git show commit                           `
+Resolve conflicts in files                     |                   | `git mergetool                             `
