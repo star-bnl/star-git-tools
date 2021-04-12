@@ -1,13 +1,19 @@
-In this document we collect information and instructions to help the
-collaborators of the STAR experiment at BNL with their use of the software.
+The information collected in this document is intended for the users of the STAR
+experiment, especially those who would like to contribute to the common software
+library. We hope anyone can easily adopt their workflows after the source code
+is migrated from CVS to a Git repository. If you feel something is missing or
+might be useful for other collaborators, please let us know and we will add it.
+Direct contributions to this file are very welcomed.
+
 
 - [Where is the source code?](#where-is-the-source-code%3F)
-- [How to access STAR repository hosted on GitHub](#how-to-access-star-repository-hosted-on-github)
+- [Accessing the STAR repository hosted on GitHub](#accessing-the-star-repository-hosted-on-github)
   - [Using HTTPS](#using-https)
   - [Using SSH](#using-ssh)
   - [Creating SSH tunnel](#creating-ssh-tunnel)
-- [How to checkout only one or a few packages/subdirectories](#how-to-checkout-only-one-or-a-few-packages%2Fsubdirectories)
-- [Workflow with STAR Git repositories](#workflow-with-star-git-repositories)
+- [How to checkout only one or a few packages](#how-to-checkout-only-one-or-a-few-packages)
+- [Contributing to the STAR software library](#contributing-to-the-star-software-library)
+  - [Common workflow](#common-workflow)
 - [How to build a release](#how-to-build-a-release)
 - [Equivalent commands for Git and CVS](#equivalent-commands-for-git-and-cvs)
 
@@ -19,14 +25,14 @@ collaborators of the STAR experiment at BNL with their use of the software.
 The primary repositories containing the STAR code and other support packages are
 hosted on GitHub:
 
-- https://github.com/star-bnl/star-sw  &mdash; Contains the code need to
+- https://github.com/star-bnl/star-sw  &mdash; Contains the code we use to
   reconstruct raw data collected by the experiment
 
 - https://github.com/star-bnl/star-mcgen &mdash; Contains Monte-Carlo generators
-  and the respective interfaces for simulating detector data
+  and respective interfaces for simulating detector data
 
 
-## How to access STAR repository hosted on GitHub
+## Accessing the STAR repository hosted on GitHub
 
 ### Using HTTPS
 
@@ -95,7 +101,7 @@ Note the addition of the `ssh://` prefix. It helps Git to recognize the general
 URL syntax specifying the port number.
 
 
-## How to checkout only one or a few packages/subdirectories
+## How to checkout only one or a few packages
 
 This is called a sparse checkout. In this case you start by cloning the bare
 repository
@@ -113,7 +119,7 @@ to work with a limited number of modules
     $ git config core.sparseCheckout true
 
 Now create and modify the `.git/info/sparse-checkout` file to include a list of
-packages/subdirectories you want to work with locally. The contents of the file
+packages you want to work with locally. The contents of the file
 may look like this
 
     $ cat .git/info/sparse-checkout
@@ -141,10 +147,12 @@ Assuming the default STAR environment on a RACF interactive node the code can be
 compiled as usual with the `cons` command.
 
 
-## Workflow with STAR Git repositories
+## Contributing to the STAR software library
+
+### Common workflow
 
 We adopt a very common workflow typical for many projects hosting a central
-repository on GitHub. It can be summarized in a few steps outlined below:
+repository on GitHub. It can be summarized in a few steps as outlined below:
 
 1. **Fork the repo.** A "copy" of the central repository is created under your
   GitHub account
@@ -153,7 +161,7 @@ repository on GitHub. It can be summarized in a few steps outlined below:
    machine by using a Git command similar to this:
 
    ```shell
-   $ git clone git@github.com:&lt;YOUR-USERNAME&gt;/star-sw.git
+   $ git clone git@github.com:<YOUR-USERNAME>/star-sw.git
    ```
 
 3. **Make changes locally.** The code is modified and commits with informative
