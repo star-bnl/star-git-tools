@@ -14,6 +14,7 @@ Direct contributions to this file are very welcomed.
 - [How to checkout only one or a few packages](#how-to-checkout-only-one-or-a-few-packages)
 - [Contributing to the STAR software library](#contributing-to-the-star-software-library)
   - [Common workflow](#common-workflow)
+  - [Policies](#policies)
 - [How to build a release](#how-to-build-a-release)
 - [Equivalent commands for Git and CVS](#equivalent-commands-for-git-and-cvs)
 
@@ -175,6 +176,47 @@ repository on GitHub. It can be summarized in a few steps as outlined below:
 
 5. **Create a pull request.** Let others know that you want to merge your
   changes into the central repository
+
+
+### Policies
+
+GitHub allows to configure and enforce certain policies on how users can
+contribute their changes to the project. The main idea behind such rules is to
+make the collaborative development more straightforward and avoid unnecessary
+backlashes. We choose the rules consistent with historical development in CVS.
+Below we list the most prominent settings applied to the STAR Git repositories
+of which anyone contributing to the repos should be aware.
+
+- **All branches are protected:** Disable force pushes and prevent branches from
+  being deleted
+
+- **Maintain linear history:** Prevent merge commits from being pushed to
+  branches
+
+  - A linear history is usually easier for humans to understand and debug
+
+- **Require pull requests on GitHub** as the only way to merge commits onto
+remote branch
+
+  - Direct pushes to remote branches are disabled for all collaborators
+
+  - We believe the pull requests submitted via GitHub interface provide a better
+    documentation of proposed changes
+
+- **Require pull request reviews before merging**
+
+  - GitHub can suggest reviewers based on historical code changes
+
+  - We suggest two required approving reviews from code owners/maintainers
+    before a pull request can be merged
+
+    - Similar to `CVSROOT/avail` we create a `CODEOWNERS` file in our repository
+      mapping subdirectories to specific people whose approval is required. For
+      example, see
+      https://github.com/star-bnl/star-git-tools/blob/main/.github/CODEOWNERS_star-sw
+
+  - In cases when reviewers cannot be easily identified the Infrastructure Team
+  will step in
 
 
 ## How to build a release
