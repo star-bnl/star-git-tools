@@ -32,6 +32,14 @@ hosted on GitHub:
 - https://github.com/star-bnl/star-mcgen &mdash; Contains Monte-Carlo generators
   and respective interfaces for simulating detector data
 
+- https://github.com/star-bnl/star-sw-test &mdash; This is a temporary test
+  repository for STAR users to play with GitHub's interface during the CVS to
+  Git transition period. Feel free to create issues, pull requests, etc. but
+  don't expect the changes to be accepted in the official releases. This
+  repository will be deleted once the primary repository
+  [star-sw](https://github.com/star-bnl/star-sw) starts operating in normal mode
+  on May 17, 2021.
+
 
 ## Accessing the STAR repository hosted on GitHub
 
