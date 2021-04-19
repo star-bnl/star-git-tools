@@ -7,6 +7,7 @@ Direct contributions to this file are very welcomed.
 
 
 - [Where is the source code?](#where-is-the-source-code%3F)
+- [On migration of STAR code from CVS to Git](#on-migration-of-star-code-from-cvs-to-git)
 - [Accessing the STAR repository hosted on GitHub](#accessing-the-star-repository-hosted-on-github)
   - [Using HTTPS](#using-https)
   - [Using SSH](#using-ssh)
@@ -39,6 +40,31 @@ hosted on GitHub:
   repository will be deleted once the primary repository
   [star-sw](https://github.com/star-bnl/star-sw) starts operating in normal mode
   on May 17, 2021.
+
+
+## On migration of STAR code from CVS to Git
+
+The primary focus of the STAR code migration from CVS to Git is on the "offline"
+code responsible for event reconstruction, geometry, simulation, calibration,
+and interaction with the database. The following top-level directories (and all
+of their contents) are transfered to the `star-sw` and `star-mcgen` repositores
+and will be set to read-only mode in CVS.
+
+    star-sw                     star-mcgen
+    |-- asps                    |-- pams
+    |-- kumacs                  |   `-- gen
+    |-- mgr                     `-- StRoot
+    |-- OnlTools                    `-- StarGenerator
+    |-- pams
+    |-- StarDb
+    |-- StarVMC
+    |-- StDb
+    `-- StRoot
+
+It is worth noting that the "online" code, files from the archived user
+analyses, and some other support scripts (i.e. the `/online`, `/offline`, and
+`/scripts` directories in CVS) are not part of the migration and can be accessed
+and manipulated by the users as usual.
 
 
 ## Accessing the STAR repository hosted on GitHub
