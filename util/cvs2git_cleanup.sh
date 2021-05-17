@@ -9,14 +9,14 @@
 echo SCRIPT_DIR $SCRIPT_DIR
 
 pushd ${GIT_REPO_DIR}
+touch ${GIT_REPO_DIR}/blobs_to_keep.txt
 
-echo -n "" > ${GIT_REPO_DIR}/blobs_to_keep.txt
 # Add "main" branch to the list of protected references
 TAGS_TO_PROTECT="main $(git tag -l ${TAGS_TO_PROTECT} | tr '\n' ' ')"
+echo "TAGS_TO_PROTECT=$TAGS_TO_PROTECT"
 
 for tag in main ${TAGS_TO_PROTECT}
 do
-    echo $tag
     git ls-tree -r $tag | awk '{print $3}' >> ${GIT_REPO_DIR}/blobs_to_keep.txt
     cat ${GIT_REPO_DIR}/blobs_to_keep.txt | sort | uniq > ${GIT_REPO_DIR}/.blobs_to_keep.txt
     mv ${GIT_REPO_DIR}/.blobs_to_keep.txt ${GIT_REPO_DIR}/blobs_to_keep.txt
