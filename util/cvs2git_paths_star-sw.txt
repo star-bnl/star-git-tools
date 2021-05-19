@@ -20,7 +20,13 @@
 - /root
 - /root3
 - /root5
-- /StarDb/AgiGeometry
++ /StarDb/
++ /StarDb/AgiGeometry/
++ /StarDb/AgiGeometry/CreateGeometry.h,v
+- /StarDb/AgiGeometry/*y2018.?,v
+- /StarDb/AgiGeometry/*y2019.?,v
++ /StarDb/AgiGeometry/*y20*.?,v
+- /StarDb/AgiGeometry/*
 - /StarDb/VmcGeometry
 - /StRoot/StarGenerator/Hijing1_383
 - /StRoot/StarGenerator/Photos3_61
