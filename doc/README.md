@@ -288,3 +288,27 @@ Retrieve changes from repository               | `cvs update`      | `git pull  
 Show log of changes to a file                  | `cvs log <file>`  | `git log <file>                            `
 Show changes in commit/revision                |                   | `git show commit                           `
 Resolve conflicts in files                     |                   | `git mergetool                             `
+
+## Tips for csh users
+
+Switching between branches may become confusing. To help you with tracking of the current branch you might want to put following lines to your `~/.cshrc`:
+
+```csh
+alias cd 'chdir \!:* && update_prompt'
+alias git 'command git \!:* && update_prompt'
+alias update_prompt 'set prompt="%B%S[%m]%s%b %.04/`command git branch |& grep \* | awk \{print\ "\\\""\ \("\\\"\\\$"2"\\\""\)"\\\""\}`> "'
+```
+
+This will modify your prompt from
+
+```
+[rcas6xxx] ~/star-sw/> 
+```
+
+To something like
+
+```
+[rcas6xxx] ~/star-sw/ (main)> 
+```
+
+*This is just a hack and may fail to update the command prompt. Feel free to open an issue if you encounter any problems or have any suggestions regarding this.*
