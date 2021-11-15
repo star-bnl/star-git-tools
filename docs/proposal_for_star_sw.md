@@ -14,7 +14,7 @@ the DVCS over a local copy of the entire code revision history.
   performance
 
 - Git has powerful branching capabilities. Developing new features on a new
-branch ensures that the master branch is not affected
+branch ensures that the main branch is not affected
 
 - Free Github and Gitlab services offer easy auditing of branches and code
   merges
@@ -59,7 +59,7 @@ new Git repository on Github.
 
 - A Git mirror of the STAR CVS repository has been created with the
   aforementioned scripts. It is available for review at
-  [https://github.com/star-bnl/star-cvs](https://github.com/star-bnl/star-cvs)
+  [https://github.com/star-bnl/star-sw](https://github.com/star-bnl/star-sw)
 
 - TODO: It is possible to preserve the original author name of a commit by
   providing a mapping between the RACF login account and the corresponding
